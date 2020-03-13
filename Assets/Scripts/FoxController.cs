@@ -10,12 +10,14 @@ public class FoxController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sRder;
     private GameObject FootFox;
+    private Animator aniFox;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sRder = GetComponent<SpriteRenderer>();
         FootFox = GameObject.Find("FootFox");
+        aniFox = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -29,7 +31,7 @@ public class FoxController : MonoBehaviour
         float move = Input.GetAxis("Horizontal");
         if (move > 0f) {
             rb.velocity = new Vector2(move * speed, rb.velocity.y);
-            sRder.flipX = false;
+            sRder.flipX = false;          
         } else if(move < 0f)
         {
             rb.velocity = new Vector2(move * speed, rb.velocity.y);
@@ -43,7 +45,30 @@ public class FoxController : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             if (checkOnGround()) {
-                rb.velocity = new Vector2(rb.velocity.x, jumpHight);
+                rb.velocity = new Vector2(rb.velocity.x, jumpHight); 
+            }
+        }
+
+        if (checkOnGround())
+        {
+            if (Mathf.Abs(rb.velocity.x)>0f)
+            {
+                aniFox.SetInteger("StatusFox",1);
+            }
+            else
+            {
+                aniFox.SetInteger("StatusFox", 0);
+            }
+        }
+        else
+        {
+            if (rb.velocity.y>0)
+            {
+                aniFox.SetInteger("StatusFox", 2);
+            }
+            else
+            {
+                aniFox.SetInteger("StatusFox", 3);
             }
         }
     }
@@ -56,8 +81,7 @@ public class FoxController : MonoBehaviour
 
         int a = Physics2D.OverlapBox(point, size, 0f, new ContactFilter2D(), results);
         if (a>1)
-        {
-            Debug.Log(a);
+        {        
             return true;
         }
         return false;
