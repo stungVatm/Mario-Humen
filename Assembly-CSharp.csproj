@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Assets\Fox\Fox\Scripts\Fox_Move.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\CheckPoint.cs" />
     <Compile Include="Assets\Scripts\CoinScript.cs" />
     <Compile Include="Assets\Scripts\FoxController.cs" />
     <None Include="Assets\Fox\Readme.txt" />

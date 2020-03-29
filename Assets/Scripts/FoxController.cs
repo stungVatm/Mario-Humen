@@ -21,54 +21,53 @@ public class FoxController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         movement();
     }
 
     void movement()
     {
-        float move = Input.GetAxis("Horizontal");
-        if (move > 0f) {
-            rb.velocity = new Vector2(move * speed, rb.velocity.y);
-            sRder.flipX = false;          
-        } else if(move < 0f)
-        {
-            rb.velocity = new Vector2(move * speed, rb.velocity.y);
-            sRder.flipX = true;
-        }
-        else
-        {
-
-        }
-
-        if (Input.GetKeyDown("space"))
-        {
-            if (checkOnGround()) {
-                rb.velocity = new Vector2(rb.velocity.x, jumpHight); 
-            }
-        }
-
+        
         if (checkOnGround())
         {
-            if (Mathf.Abs(rb.velocity.x)>0f)
+            float move = Input.GetAxis("Horizontal");
+            if (move > 0f)
             {
-                aniFox.SetInteger("StatusFox",1);
+                aniFox.SetInteger("StatusFox", 1);
+                rb.velocity = new Vector2(move * speed, rb.velocity.y);
+                sRder.flipX = false;
+            }
+            else if (move < 0f)
+            {
+                aniFox.SetInteger("StatusFox", 1);
+                rb.velocity = new Vector2(move * speed, rb.velocity.y);
+                sRder.flipX = true;
             }
             else
             {
                 aniFox.SetInteger("StatusFox", 0);
             }
+
+            if (Input.GetKeyDown("space"))
+            {
+                aniFox.SetInteger("StatusFox", 2);
+                rb.velocity = new Vector2(rb.velocity.x, jumpHight);
+            }
         }
         else
         {
-            if (rb.velocity.y>0)
+            aniFox.SetInteger("StatusFox", 3);//drop
+            float move = Input.GetAxis("Horizontal");
+            if (move > 0f)
             {
-                aniFox.SetInteger("StatusFox", 2);
+                rb.velocity = new Vector2(move * speed, rb.velocity.y);
+                sRder.flipX = false;
             }
-            else
+            else if (move < 0f)
             {
-                aniFox.SetInteger("StatusFox", 3);
+                rb.velocity = new Vector2(move * speed, rb.velocity.y);
+                sRder.flipX = true;
             }
         }
     }
@@ -87,4 +86,17 @@ public class FoxController : MonoBehaviour
         return false;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Gold")
+            Destroy(collision.gameObject);
+    }
+
+    private void Update()
+    {
+        if (transform.position.y<-6)
+        {
+            transform.position = new Vector3(-5,-2,0);
+        }
+    }
 }
