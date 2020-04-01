@@ -68,6 +68,8 @@
     <Compile Include="Assets\Scripts\CheckPoint.cs" />
     <Compile Include="Assets\Scripts\CoinScript.cs" />
     <Compile Include="Assets\Scripts\FoxController.cs" />
+    <Compile Include="Assets\Scripts\GameManageCtr.cs" />
+    <Compile Include="Assets\Scripts\GlodCtr.cs" />
     <None Include="Assets\Fox\Readme.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Admin/Desktop/Mario-Humen/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

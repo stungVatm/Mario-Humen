@@ -11,13 +11,28 @@ public class FoxController : MonoBehaviour
     private SpriteRenderer sRder;
     private GameObject FootFox;
     private Animator aniFox;
+    public Vector3 locationStart;
     // Start is called before the first frame update
+
+    public int score;
+    private GlodCtr goldCtr;
+
+    private GameManageCtr _gameManageCtr;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sRder = GetComponent<SpriteRenderer>();
         FootFox = GameObject.Find("FootFox");
         aniFox = GetComponent<Animator>();
+
+        //locationStart
+        locationStart = new Vector3(-5, -2, 0);
+
+        //score
+        score = 0;
+
+        //gameManageCtr
+        _gameManageCtr = FindObjectOfType<GameManageCtr>();
     }
 
     // Update is called once per frame
@@ -89,14 +104,41 @@ public class FoxController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Gold")
+        {
+            goldCtr = collision.gameObject.GetComponents<GlodCtr>()[0];
+            score += goldCtr.coinValue;
+            //
             Destroy(collision.gameObject);
+            //
+            _gameManageCtr.LoadScore(score);
+        }
+            
     }
 
-    private void Update()
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "FlagCheckPoint" && collision.transform.position.x>locationStart.x)
+        {
+            locationStart = collision.gameObject.transform.position;
+        }
+    }
+
+    void Update()
     {
         if (transform.position.y<-6)
         {
-            transform.position = new Vector3(-5,-2,0);
+
+            //transform.position = locationStart;
+            //StartCoroutine("Reswapn");
+            StartCoroutine(Reswapn());
         }
+    }
+
+
+    IEnumerator Reswapn()
+    {
+        Debug.Log("Da vao");
+        yield return new WaitForSeconds(2f);
+        transform.position = locationStart;
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Gold
   - MainFox
+  - FlagCheckPoint
   layers:
   - Default
   - TransparentFX
